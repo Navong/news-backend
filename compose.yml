@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  back:
+    container_name: news-backend
+    image: nolandev1/news-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    labels:
+      - "traefik.http.routers.news-backend.rule=(Host(`news-backend.navong.xyz`) && PathPrefix(`/api`))"
+    networks:
+      - traefik-network
+    restart: always
+
+networks:
+  traefik-network:
+    external: true
+
+
+
+
+
+
+
+
+
