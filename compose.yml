@@ -13,7 +13,7 @@ services:
       - "traefik.http.routers.news-backend.rule=(Host(`newsbackend.navong.xyz`) && PathPrefix(`/api`))"
     networks:
       - traefik-network
-    restart: always
+    restart: unless-stopped
 
 networks:
   traefik-network:
