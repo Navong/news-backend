@@ -3,9 +3,18 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const app = express();
 const port = 3001; // You can change this to any available port
+const cors = require('cors');
+
 
 // Middleware to parse JSON body
 app.use(express.json());
+
+//cors
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Route to fetch articles by category
 app.get('/api/news/:category', async (req, res) => {
