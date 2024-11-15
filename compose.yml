@@ -9,6 +9,8 @@ services:
       dockerfile: Dockerfile
     environment:
       DATABASE_URL: ${DATABASE_URL}
+    ports:
+      - "4000:4000"
     labels:
       - "traefik.http.routers.news-backend.rule=(Host(`newsbackend.navong.xyz`) && PathPrefix(`/api`))"
     networks:
