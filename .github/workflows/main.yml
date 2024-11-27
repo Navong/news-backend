@@ -36,12 +36,6 @@ jobs:
           username: ${{ secrets.RASPBERRY_PI_USER }}
           key: ${{ secrets.RASPBERRY_PI_SSH_KEY }}
 
-      # Optionally, decode the private key if using Base64 encoding
-      - name: Decode SSH private key
-        run: |
-          echo "$RASPBERRY_PI_SSH_KEY" | base64 --decode > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
       - name: Clone Git repository on Raspberry Pi
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_HOST }} "
