@@ -36,19 +36,13 @@ jobs:
           username: ${{ secrets.RASPBERRY_PI_USER }}
           key: ${{ secrets.RASPBERRY_PI_SSH_KEY }}
 
-      - name: Set up SSH for Raspberry Pi and GitHub
-        run: |
-          mkdir -p ~/.ssh
-          echo "$RASPBERRY_PI_SSH_KEY" | base64 --decode > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          eval $(ssh-agent -s)
-          ssh-add ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
 
       - name: Clone Git repository on Raspberry Pi
         run: |
-          ssh -o StrictHostKeyChecking=no pi@${{ secrets.RASPBERRY_PI_HOST }} "
-            git clone git@github.com:Navong/news-backend.git /home/dev/backend
+          ssh -o StrictHostKeyChecking=no ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_HOST }} "
+            if [ ! -d '/home/dev/backend' ]; then
+              git clone https://github.com/Navong/news-backend.git /home/dev/backend/news-backend;
+            fi
           "
 
       - name: Create .env.local on Raspberry Pi
