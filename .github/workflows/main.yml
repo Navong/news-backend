@@ -37,24 +37,39 @@ jobs:
           key: ${{ secrets.RASPBERRY_PI_SSH_KEY }}
 
 
-      - name: Clone Git repository on Raspberry Pi
+      # - name: Clone Git repository on Raspberry Pi
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_HOST }} "
+      #       if [ ! -d '/home/dev/backend/test' ]; then
+      #         git clone https://github.com/Navong/news-backend.git /home/dev/backend/test;
+      #       fi
+      #     "
+
+      - name: Set up SSH for Raspberry Pi and GitHub
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_HOST }} "
-            if [ ! -d '/home/dev/backend/test' ]; then
-              git clone https://github.com/Navong/news-backend.git /home/dev/backend/test;
-            fi
+          mkdir -p ~/.ssh
+          echo "$RASPBERRY_PI_SSH_KEY_TEST" | base64 --decode > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          eval $(ssh-agent -s)
+          ssh-add ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Clone Git repository to Raspberry Pi
+        run: |
+          ssh -o StrictHostKeyChecking=no pi@${{ secrets.RASPBERRY_PI_HOST }} "
+            git clone git@github.com:Navong/news-backend.git /home/dev/backend/test/news-backend
           "
 
-      - name: Create .env.local on Raspberry Pi
-        run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env.local
-          scp .env.local ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_HOST }}:/home/dev/backend/news-backend
+      # - name: Create .env.local on Raspberry Pi
+      #   run: |
+      #     echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env.local
+      #     scp .env.local ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_HOST }}:/home/dev/backend/news-backend
 
-      # Step 3: Pull Docker image and run container on Raspberry Pi
-      - name: Pull Docker image and run container on Raspberry Pi
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_HOST }} "
-            cd /home/dev/backend/news-backend &&
-            docker pull navong/news-backend:latest &&
-            docker-compose --env-file .env.local up -d
-          "
+      # # Step 3: Pull Docker image and run container on Raspberry Pi
+      # - name: Pull Docker image and run container on Raspberry Pi
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_HOST }} "
+      #       cd /home/dev/backend/news-backend &&
+      #       docker pull navong/news-backend:latest &&
+      #       docker-compose --env-file .env.local up -d
+      #     "
