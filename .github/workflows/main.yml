@@ -48,11 +48,12 @@ jobs:
       - name: Set up SSH for Raspberry Pi and GitHub
         run: |
           mkdir -p ~/.ssh
-          echo "$RASPBERRY_PI_SSH_KEY_TEST" | base64 --decode > ~/.ssh/id_rsa
+          echo "$RASPBERRY_PI_SSH_KEY" | base64 --decode > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
+
 
       - name: Clone Git repository to Raspberry Pi
         run: |
