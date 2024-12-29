@@ -41,6 +41,8 @@ jobs:
           sshpass -p "${{ secrets.RASPBERRY_PI_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_HOST }} "
             if [ ! -d '/home/dev/backend/news-backend' ]; then
               git clone https://github.com/Navong/news-backend.git /home/dev/backend/news-backend;
+            else
+              cd /home/dev/backend/news-backend && git pull;
             fi
           "
 

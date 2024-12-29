@@ -34,7 +34,8 @@ services:
     networks:
       - traefik-network
     restart: unless-stopped
-
+    
 networks:
   traefik-network:
     external: true
+
