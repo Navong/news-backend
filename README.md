@@ -1,21 +1,5 @@
-## Table of Contents
-1. [Project Overview](#project-overview)
-2. [Project Structure](#project-structure)
-3. [Deployment Environment](#deployment-environment)
-4. [CI/CD Pipeline](#cicd-pipeline)
-    1. [Workflow Trigger](#workflow-trigger)
-    2. [CI/CD Steps](#cicd-steps)
-5. [Prerequisites](#prerequisites)
-    1. [Raspberry Pi Setup](#1-raspberry-pi-setup)
-    2. [GitHub Secrets](#2-github-secrets)
-6. [Pipeline Configuration](#pipeline-configuration)
-7. [What I Learned](#what-i-learned)
-8. [Usage](#usage)
-9. [Troubleshooting](#troubleshooting)
-
----
-
 ## Project Overview
+[![Node.js](https://img.shields.io/badge/Node.js-Latest-339933?style=flat&logo=node.js)](https://nodejs.org/)  [![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-Automated-2088FF?style=flat&logo=github-actions)](https://github.com/features/actions)  [![Docker](https://img.shields.io/badge/Docker-20.10.8-2496ED?style=flat&logo=docker)](https://www.docker.com/)  [![Traefik](https://img.shields.io/badge/Traefik-2.9-FF7043?style=flat&logo=traefik)](https://traefik.io/)  [![Cron](https://img.shields.io/badge/Cron-Scheduled-important?style=flat&logo=linux)](https://en.wikipedia.org/wiki/Cron) [![Prisma](https://img.shields.io/badge/Prisma-Latest-2D3748?style=flat&logo=prisma)](https://www.prisma.io/)  
 
 This project contains the backend code for the **News Backend** application. The backend provides essential API endpoints for managing and serving news-related data. It is hosted on a Raspberry Pi, with Docker-based deployment to ensure consistency and reliability.
 
@@ -73,75 +57,22 @@ The following secrets must be configured in your GitHub repository:
 - `DATABASE_URL`: Database connection string for the backend
 
 ## Pipeline Configuration
-The CI/CD pipeline is defined in the `.github/workflows/main.yml` file. Below is a high-level overview:
-
-```yaml
-name: CI/CD Pipeline
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build Docker image
-        run: |
-          docker build -t your-dockerhub-username/your-image-name:latest .
-
-      - name: Push Docker image to Docker Hub
-        run: |
-          docker push your-dockerhub-username/your-image-name:latest
-
-      - name: Install sshpass
-        run: sudo apt-get update && sudo apt-get install -y sshpass
-
-      - name: Clone Git repository on Raspberry Pi
-        run: |
-          sshpass -p "${{ secrets.RASPBERRY_PI_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_HOST }} "
-            if [ ! -d '/home/<your-username>/backend/test' ]; then
-              git clone https://github.com/<your-username>/news-backend.git /home/<your-username>/backend/test;
-            fi
-          "
-
-      - name: Create .env.local on Raspberry Pi
-        run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env.local
-          sshpass -p "${{ secrets.RASPBERRY_PI_PASSWORD }}" scp .env.local ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_HOST }}:/home/<your-username>/backend/test
-
-      - name: Pull Docker image and run container on Raspberry Pi
-        run: |
-          sshpass -p "${{ secrets.RASPBERRY_PI_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_HOST }} "
-            cd /home/<your-username>/backend/test &&
-            docker pull your-dockerhub-username/your-image-name:latest &&
-            docker-compose --env-file .env.local up -d
-          "
-```
+The CI/CD pipeline is defined in the `.github/workflows/main.yml` file. 
 
 ## What I Learned
 Throughout the process of setting up the CI/CD pipeline for deploying the backend API to a Raspberry Pi, I gained valuable knowledge and experience in the following areas:
 
-- **Automating Backend Deployment**: I learned how to automate the entire process, from code changes to deployment, by leveraging GitHub Actions and Docker.
-  
-- **Docker and Docker Compose**: I got hands-on experience with Docker, including building images and managing containers with Docker Compose. This ensures consistency across different environments (local and production).
+- **Automating Backend Deployment**: Leveraged GitHub Actions and Docker to automate the entire deployment process, from code changes to production, streamlining and simplifying the workflow.  
 
-- **SSH and Secure Deployment**: By using `sshpass` and SSH for remote connections, I automated the process of pulling and deploying code to the Raspberry Pi without manual intervention.
+- **Docker and Docker Compose Expertise**: Gained hands-on experience with Docker, including building images and managing containers with Docker Compose, ensuring consistent behavior across both local and production environments.  
 
-- **Handling Environment Variables**: I understood the importance of managing sensitive information such as database credentials, and how to handle environment variables securely within the pipeline using GitHub Secrets.
+- **Automating Secure Deployment**: Automated remote deployment processes by integrating SSH and `sshpass`, allowing for seamless code updates and deployment to the Raspberry Pi without manual intervention.  
 
-- **Debugging and Troubleshooting**: Encountering issues with SSH connections, Git cloning, and Docker deployment helped me improve my troubleshooting skills. I learned to look into Docker logs, verify network configurations, and ensure everything is running smoothly.
+- **Secure Environment Management**: Learned to manage environment variables securely using GitHub Secrets to handle sensitive information, such as database credentials, effectively within the pipeline.  
+
+- **Enhanced Debugging Skills**: Improved troubleshooting skills by resolving issues related to SSH connections, Git operations, and Docker deployments, utilizing tools such as Docker logs and network configuration analysis.  
+
+- **Scheduled News Updates**: Set up a cron job to fetch and update fresh news three times daily, ensuring up-to-date content availability.  
 
 ## Usage
 1. Push changes to the `main` branch of your GitHub repository.
