@@ -1,5 +1,57 @@
+/**
+ * @swagger
+ * /api/news/{category}:
+ *   get:
+ *     summary: Fetch articles by category
+ *     description: >
+ *       Available categories: "technology", "science", "health", "sports", "business", "entertainment".
+ *     parameters:
+ *       - in: path
+ *         name: category
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The category of articles to fetch.
+ *         enum:
+ *           - technology
+ *           - health
+ *           - sports
+ *           - business
+ *     responses:
+ *       200:
+ *         description: Successfully fetched articles.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 articles:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       title:
+ *                         type: string
+ *                       category:
+ *                         type: string
+ *                       publishedAt:
+ *                         type: string
+ *                         format: date-time
+ *       400:
+ *         description: Category is required.
+ *       404:
+ *         description: No articles found for the specified category.
+ *       500:
+ *         description: Failed to fetch news articles.
+ */
+
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocs = require('./swaggerConfig'); // Import the configuration
+
 const prisma = new PrismaClient();
 const app = express();
 const port = 4000; // You can change this to any available port
@@ -15,6 +67,9 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Set up Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Route to fetch articles by category
 app.get('/api/news/:category', async (req, res) => {
