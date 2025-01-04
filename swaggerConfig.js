@@ -10,7 +10,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:4000', // Replace with your server URL
+        url: 'http://newsbackend.navong.xyz', // Replace with your server URL
       },
     ],
   },
