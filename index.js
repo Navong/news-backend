@@ -69,7 +69,7 @@ app.use(cors({
 }));
 
 // Set up Swagger UI
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Route to fetch articles by category
 app.get('/api/news/:category', async (req, res) => {
