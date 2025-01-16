@@ -29,12 +29,12 @@ jobs:
       #     docker push navong/news-backend:latest
 
       # Step 2: SSH into Raspberry Pi, clone the repo, and create .env.local file
-      - name: Set up SSH to Raspberry Pi
-        uses: appleboy/ssh-action@v0.1.5
-        with:
-          host: ${{ secrets.RASPBERRY_PI_HOST }}
-          username: ${{ secrets.RASPBERRY_PI_USER }}
-          key: ${{ secrets.RASPBERRY_PI_SSH_KEY }}
+      # - name: Set up SSH to Raspberry Pi
+      #   uses: appleboy/ssh-action@v0.1.5
+      #   with:
+      #     host: ${{ secrets.RASPBERRY_PI_HOST }}
+      #     username: ${{ secrets.RASPBERRY_PI_USER }}
+      #     key: ${{ secrets.RASPBERRY_PI_SSH_KEY }}
 
 
       # - name: Clone Git repository on Raspberry Pi
