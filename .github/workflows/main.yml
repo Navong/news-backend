@@ -40,8 +40,8 @@ jobs:
       - name: Clone Git repository on Raspberry Pi
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_HOST }} "
-            if [ ! -d '/home/dev/backend' ]; then
-              git clone https://github.com/Navong/news-backend.git /home/dev/backend/news-backend;
+            if [ ! -d '/home/dev/backend/test' ]; then
+              git clone https://github.com/Navong/news-backend.git /home/dev/backend/test;
             fi
           "
 
