@@ -14,6 +14,6 @@ docker images
 
 
 ```bash
-docker tag back:latest nolandev1/news-back:latest
-docker push nolandev1/news-back:latest
+docker tag news-backend nolandev1/news-backend
+docker push nolandev1/news-backend
 ```
