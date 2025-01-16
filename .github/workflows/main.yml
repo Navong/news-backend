@@ -22,11 +22,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t nolandev1/news-backend:latest .
+          docker build -t navong/news-backend:latest .
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push nolandev1/news-backend:latest
+          docker push navong/news-backend:latest
 
       # # Step 2: SSH into Raspberry Pi, clone the repo, and create .env.local file
       # - name: Set up SSH to Raspberry Pi
