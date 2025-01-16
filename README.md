@@ -1,3 +1,20 @@
+## Table of Contents
+1. [Project Overview](#project-overview)
+2. [Project Structure](#project-structure)
+3. [Deployment Environment](#deployment-environment)
+4. [CI/CD Pipeline](#cicd-pipeline)
+    1. [Workflow Trigger](#workflow-trigger)
+    2. [CI/CD Steps](#cicd-steps)
+5. [Prerequisites](#prerequisites)
+    1. [Raspberry Pi Setup](#raspberry-pi-setup)
+    2. [GitHub Secrets](#github-secrets)
+6. [Pipeline Configuration](#pipeline-configuration)
+7. [What I Learned](#what-i-learned)
+8. [Usage](#usage)
+9. [Troubleshooting](#troubleshooting)
+
+---
+
 ## Project Overview
 
 This project contains the backend code for the **News Backend** application. The backend provides essential API endpoints for managing and serving news-related data. It is hosted on a Raspberry Pi, with Docker-based deployment to ensure consistency and reliability.
@@ -35,7 +52,7 @@ The pipeline is triggered whenever a commit is pushed to the `main` branch of th
 
 3. **Raspberry Pi Deployment**:
    - Uses `sshpass` to securely connect to the Raspberry Pi via SSH.
-   - Verifies if the project directory (`/home/backend/test`) exists. If not, it clones the Git repository.
+   - Verifies if the project directory (`/home/<your-username>/backend/test`) exists. If not, it clones the Git repository.
    - Creates a `.env.local` file containing environment variables, such as `DATABASE_URL`.
    - Pulls the latest Docker image from Docker Hub.
    - Runs the container using `docker-compose`.
@@ -131,3 +148,9 @@ Throughout the process of setting up the CI/CD pipeline for deploying the backen
 2. The CI/CD pipeline will automatically:
    - Build and push a Docker image.
    - Deploy the updated backend to your Raspberry Pi.
+
+## Troubleshooting
+- **SSH Errors**: Ensure the Raspberry Pi username, password, and IP address are correct.
+- **Git Clone Issues**: Verify the repository URL and network connectivity.
+- **Docker Issues**: Check Docker logs on the Raspberry Pi for detailed error messages.
+
