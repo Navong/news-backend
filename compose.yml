@@ -10,7 +10,7 @@ services:
     environment:
       DATABASE_URL: ${DATABASE_URL}
     labels:
-      - "traefik.http.routers.news-backend.rule=(Host(`news-backend.navong.xyz`) && PathPrefix(`/api`))"
+      - "traefik.http.routers.news-backend.rule=(Host(`newsbackend.navong.xyz`) && PathPrefix(`/api`))"
     networks:
       - traefik-network
     restart: always
