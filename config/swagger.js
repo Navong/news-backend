@@ -7,8 +7,6 @@ module.exports = {
     },
     servers: [
         {
-            url: 'http://localhost:4002',
-        }, {
             url: 'https://news-backend.navong.cloud'
         }
     ],
