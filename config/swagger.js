@@ -9,7 +9,7 @@ module.exports = {
         {
             url: 'http://localhost:4002',
         }, {
-            url: 'https://news-back.azurewebsites.net'
+            url: 'https://news-backend.navong.cloud'
         }
     ],
     paths: {
